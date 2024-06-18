@@ -3,14 +3,30 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package Rupp;
-
+import java.sql.PreparedStatement;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.ResultSet;
 import javax.swing.JOptionPane;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author HAV
  */
 public class Login extends javax.swing.JFrame {
+    public Connection connection() {
+        Connection con = null;
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/db_login?useSSL=false", "root", "");
+        } catch (ClassNotFoundException | SQLException e) {
+            System.err.println("Connection Error: " + e.getMessage());
+        }
+        return con;
+    }
 
     /**
      * Creates new form Login
@@ -31,41 +47,40 @@ public class Login extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        txtPassword = new javax.swing.JTextField();
         txtName = new javax.swing.JTextField();
-        btnList = new javax.swing.JToggleButton();
         btnLogin = new javax.swing.JToggleButton();
         btnCreate2 = new javax.swing.JToggleButton();
+        txtpassword = new javax.swing.JPasswordField();
         jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(950, 458));
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setBackground(new java.awt.Color(204, 204, 255));
         jLabel1.setFont(new java.awt.Font("Wide Latin", 3, 36)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(204, 204, 255));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("LOGIN TO IT SCHOOL");
+        jLabel1.setText("LOGIN  TO RUPP");
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(-5, 20, 960, 39));
 
         jLabel2.setFont(new java.awt.Font("Bookman Old Style", 1, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(204, 204, 255));
         jLabel2.setText("PASSWORD ");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 200, 160, 30));
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 200, 160, 30));
 
         jLabel3.setFont(new java.awt.Font("Bookman Old Style", 1, 24)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(204, 204, 255));
-        jLabel3.setText("NAME ");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 100, 100, 30));
-
-        txtPassword.setFont(new java.awt.Font("Century Schoolbook", 1, 18)); // NOI18N
-        txtPassword.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtPasswordActionPerformed(evt);
-            }
-        });
-        getContentPane().add(txtPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 240, 390, 40));
+        jLabel3.setText("USER NAME");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 100, 170, 30));
 
         txtName.setFont(new java.awt.Font("Century Schoolbook", 1, 18)); // NOI18N
         txtName.addActionListener(new java.awt.event.ActionListener() {
@@ -73,78 +88,82 @@ public class Login extends javax.swing.JFrame {
                 txtNameActionPerformed(evt);
             }
         });
-        getContentPane().add(txtName, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 140, 390, 40));
-
-        btnList.setBackground(new java.awt.Color(0, 0, 102));
-        btnList.setFont(new java.awt.Font("Calisto MT", 1, 18)); // NOI18N
-        btnList.setForeground(new java.awt.Color(204, 204, 255));
-        btnList.setText("List");
-        btnList.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnListActionPerformed(evt);
-            }
-        });
-        getContentPane().add(btnList, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 400, 120, 50));
+        getContentPane().add(txtName, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 140, 390, 40));
 
         btnLogin.setBackground(new java.awt.Color(0, 0, 102));
         btnLogin.setFont(new java.awt.Font("Calisto MT", 1, 18)); // NOI18N
         btnLogin.setForeground(new java.awt.Color(204, 204, 255));
+        btnLogin.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Rupp/Photos/Login_1.png"))); // NOI18N
         btnLogin.setText("LOGIN");
         btnLogin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnLoginActionPerformed(evt);
             }
         });
-        getContentPane().add(btnLogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 320, 120, 50));
+        getContentPane().add(btnLogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 320, 150, 50));
 
         btnCreate2.setBackground(new java.awt.Color(0, 0, 102));
         btnCreate2.setFont(new java.awt.Font("Calisto MT", 1, 18)); // NOI18N
         btnCreate2.setForeground(new java.awt.Color(204, 204, 255));
+        btnCreate2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Rupp/Photos/Create.png"))); // NOI18N
         btnCreate2.setText("CREATE");
         btnCreate2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCreate2ActionPerformed(evt);
             }
         });
-        getContentPane().add(btnCreate2, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 320, 120, 50));
+        getContentPane().add(btnCreate2, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 320, 160, 50));
+
+        txtpassword.setFont(new java.awt.Font("sansserif", 0, 18)); // NOI18N
+        getContentPane().add(txtpassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 250, 390, 40));
 
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Rupp/Photos/login.png"))); // NOI18N
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 960, 460));
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 960, 470));
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPasswordActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtPasswordActionPerformed
-
     private void txtNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNameActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtNameActionPerformed
 
-    private void btnListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnListActionPerformed
-        // TODO add your handling code here:
-        ListName.main(null);
-        this.dispose();
-    }//GEN-LAST:event_btnListActionPerformed
-
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
-        // TODO add your handling code here:
         String username = txtName.getText();
-        String password = txtPassword.getText();
-        if(username.equals("rupp")&&password.equals("123123")){
-            Form.main(null);
-            this.dispose();
+        String password = String.valueOf(txtpassword.getPassword());
+
+        try (
+              Connection con = connection();
+            PreparedStatement ps = (PreparedStatement) con.prepareStatement("SELECT `username`, `password` FROM `login` WHERE username='"+username+"' AND `password`='"+password+"'")) {
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    Form.main(null);
+                    this.dispose();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Invalid Username or Password");
+                    Login.main(null);
+                    this.dispose();
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
         }
-        else{
-            JOptionPane.showMessageDialog(this, "Login not success...!");
-        }
+    
     }//GEN-LAST:event_btnLoginActionPerformed
 
     private void btnCreate2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreate2ActionPerformed
         // TODO add your handling code here:
+        Register.main(null);
+        this.dispose();
     }//GEN-LAST:event_btnCreate2ActionPerformed
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+
+    }//GEN-LAST:event_formWindowOpened
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+
+    }//GEN-LAST:event_formWindowClosed
 
     /**
      * @param args the command line arguments
@@ -183,13 +202,12 @@ public class Login extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToggleButton btnCreate2;
-    private javax.swing.JToggleButton btnList;
     private javax.swing.JToggleButton btnLogin;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JTextField txtName;
-    private javax.swing.JTextField txtPassword;
+    private javax.swing.JPasswordField txtpassword;
     // End of variables declaration//GEN-END:variables
 }

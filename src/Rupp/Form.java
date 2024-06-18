@@ -3,10 +3,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package Rupp;
-
-import com.mysql.jdbc.Connection;
-import com.mysql.jdbc.PreparedStatement;
+import java.awt.HeadlessException;
 import java.io.File;
+import java.sql.PreparedStatement;
+import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -18,58 +18,71 @@ import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.design.JRDesignQuery;
+import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.util.JRSaver;
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
+import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
  * @author HAV
  */
 public class Form extends javax.swing.JFrame {
+     
     PreparedStatement ps;
     ResultSet rs;
     String sql;
-    Connection connection(){
-        Connection con = null;
-        try{
-            Class.forName("com.mysql.jdbc.Driver");
-            con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/db_rupp", "root", "");
-        }
-        catch(ClassNotFoundException | SQLException e){
-            System.err.println("connections Error : " + e.getMessage());
+    Connection con = null;
+
+    public Connection connection() {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/db_rupp?useSSL=false", "root", "");
+        } catch (ClassNotFoundException | SQLException e) {
+            System.err.println("Connection Error: " + e.getMessage());
         }
         return con;
     }
-    public void Getdata(){
-        DefaultTableModel model = (DefaultTableModel) Table.getModel();
-        model.setRowCount(0);
-        sql = "SELECT * FROM `rupp`";
-        try {
-            ps = (PreparedStatement) connection().prepareStatement(sql);
-            rs = ps.executeQuery();
-            while (rs.next()){
-                Object row []={
-                    rs.getInt(1),
-                    rs.getString(2),
-                    rs.getString(3),
-                    rs.getString(4),
-                    rs.getString(5),
-                    rs.getString(6),
-                    rs.getString(7),
-                    rs.getString(8),
-                    rs.getString(9),
-                    rs.getString(10),
-                    rs.getString(11),
-                    rs.getString(12),
-                    rs.getString(13),
-                    rs.getString(14),
-                    rs.getString(15),
-                    rs.getString(16),
-                };
-                model.addRow(row);
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(Form.class.getName()).log(Level.SEVERE, null, ex);
+    public void Getdata() {
+    DefaultTableModel model = (DefaultTableModel) Table.getModel();
+    model.setRowCount(0);
+    sql = "SELECT * FROM `rupp`";
+    try {
+        Connection con = connection();
+        ps = con.prepareStatement(sql);
+        rs = ps.executeQuery();
+        while (rs.next()) {
+            Object[] row = {
+                rs.getInt(1),
+                rs.getString(2),
+                rs.getString(3),
+                rs.getString(4),
+                rs.getString(5),
+                rs.getString(6),
+                rs.getString(7),
+                rs.getString(8),
+                rs.getString(9),
+                rs.getString(10),
+                rs.getString(11),
+                rs.getString(12),
+                rs.getString(13),
+                rs.getString(14),
+                rs.getString(15),
+                rs.getString(16)
+            };
+            model.addRow(row);
         }
+    } catch (SQLException ex) {
+        Logger.getLogger(Form.class.getName()).log(Level.SEVERE, null, ex);
     }
+}
+
     public void clearData(){
         txtId.setText("");
         txtName.setText("");
@@ -135,7 +148,6 @@ public class Form extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         Table = new javax.swing.JTable();
         btnPhotos = new javax.swing.JButton();
-        btnSort = new javax.swing.JButton();
         btnUpdate = new javax.swing.JButton();
         bntClear = new javax.swing.JButton();
         btnDelete = new javax.swing.JButton();
@@ -155,6 +167,7 @@ public class Form extends javax.swing.JFrame {
         txtPhone = new javax.swing.JTextField();
         jLabel19 = new javax.swing.JLabel();
         jdFinish = new com.toedter.calendar.JDateChooser();
+        btnReport = new javax.swing.JButton();
         jLabel18 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -391,18 +404,6 @@ public class Form extends javax.swing.JFrame {
         });
         getContentPane().add(btnPhotos, new org.netbeans.lib.awtextra.AbsoluteConstraints(1450, 210, 150, 50));
 
-        btnSort.setBackground(new java.awt.Color(0, 0, 102));
-        btnSort.setFont(new java.awt.Font("Century Schoolbook", 3, 18)); // NOI18N
-        btnSort.setForeground(new java.awt.Color(204, 204, 255));
-        btnSort.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Rupp/Photos/Sort.png"))); // NOI18N
-        btnSort.setText("Sort");
-        btnSort.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSortActionPerformed(evt);
-            }
-        });
-        getContentPane().add(btnSort, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 710, 120, 50));
-
         btnUpdate.setBackground(new java.awt.Color(0, 0, 102));
         btnUpdate.setFont(new java.awt.Font("Century Schoolbook", 3, 18)); // NOI18N
         btnUpdate.setForeground(new java.awt.Color(204, 204, 255));
@@ -413,7 +414,7 @@ public class Form extends javax.swing.JFrame {
                 btnUpdateActionPerformed(evt);
             }
         });
-        getContentPane().add(btnUpdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 710, 150, 50));
+        getContentPane().add(btnUpdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 710, 150, 50));
 
         bntClear.setBackground(new java.awt.Color(0, 0, 102));
         bntClear.setFont(new java.awt.Font("Century Schoolbook", 3, 18)); // NOI18N
@@ -425,7 +426,7 @@ public class Form extends javax.swing.JFrame {
                 bntClearActionPerformed(evt);
             }
         });
-        getContentPane().add(bntClear, new org.netbeans.lib.awtextra.AbsoluteConstraints(1220, 710, 140, 50));
+        getContentPane().add(bntClear, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 710, 140, 50));
 
         btnDelete.setBackground(new java.awt.Color(0, 0, 102));
         btnDelete.setFont(new java.awt.Font("Century Schoolbook", 3, 18)); // NOI18N
@@ -437,7 +438,7 @@ public class Form extends javax.swing.JFrame {
                 btnDeleteActionPerformed(evt);
             }
         });
-        getContentPane().add(btnDelete, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 710, -1, 50));
+        getContentPane().add(btnDelete, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 710, -1, 50));
 
         btnExit.setBackground(new java.awt.Color(0, 0, 102));
         btnExit.setFont(new java.awt.Font("Century Schoolbook", 3, 18)); // NOI18N
@@ -534,6 +535,18 @@ public class Form extends javax.swing.JFrame {
         jdFinish.setForeground(new java.awt.Color(0, 51, 51));
         getContentPane().add(jdFinish, new org.netbeans.lib.awtextra.AbsoluteConstraints(1060, 270, 210, 40));
 
+        btnReport.setBackground(new java.awt.Color(0, 0, 102));
+        btnReport.setFont(new java.awt.Font("Century Schoolbook", 3, 18)); // NOI18N
+        btnReport.setForeground(new java.awt.Color(204, 204, 255));
+        btnReport.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Rupp/Photos/Report.png"))); // NOI18N
+        btnReport.setText("Report");
+        btnReport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReportActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnReport, new org.netbeans.lib.awtextra.AbsoluteConstraints(1230, 710, 150, 50));
+
         jLabel18.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Rupp/Photos/2.png"))); // NOI18N
         getContentPane().add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1650, 770));
 
@@ -618,24 +631,24 @@ public class Form extends javax.swing.JFrame {
 
     private void btnPhotosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPhotosActionPerformed
         // TODO add your handling code here:
-        JFileChooser choos = new JFileChooser();
-        choos.showOpenDialog(null);
-        File file = choos.getSelectedFile();
+    JFileChooser choos = new JFileChooser();
+    choos.showOpenDialog(null);
+    File file = choos.getSelectedFile();
+    if (file != null) {
         String filename = file.getAbsolutePath();
         txtPhotos.setText(filename);
         ImageIcon icon = new ImageIcon(filename);
         lbPhotos.setIcon(icon);
+    } else {
+        JOptionPane.showMessageDialog(null, "NO file selected.");
+    }
     }//GEN-LAST:event_btnPhotosActionPerformed
-
-    private void btnSortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSortActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnSortActionPerformed
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         // TODO add your handling code here:
         if(JOptionPane.showConfirmDialog(null, "Do you want to update data?", "Informatoin students", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_NO_OPTION){
             try{
-                ps = (PreparedStatement) connection().prepareStatement("UPDATE rupp SET id=?, name=?, gender=? , birth=?, years=?, department=?, semester=?, class=?, time=?, building=?, date=?, start=?, finish=? phone=?, price=?, photos=? WHERE id = ?");
+               ps = connection().prepareStatement("UPDATE rupp SET id=?, name=?, gender=? , birth=?, years=?, department=?, semester=?, class=?, time=?, building=?, date=?, start=?, finish=?, phone=?, price=?, photos=? WHERE id = ?");
                 ps.setInt(1, Integer.parseInt(txtId.getText()));
                 ps.setString(2, txtName.getText());
                 ps.setString(3, rbm.isSelected()==true ? "Male" : "Female");
@@ -683,7 +696,9 @@ public class Form extends javax.swing.JFrame {
             clearData();
             JOptionPane.showMessageDialog(null, "Clear success...!");
         }
-         JOptionPane.showMessageDialog(null, "Clear not success...!");
+        else{
+            JOptionPane.showMessageDialog(null, "Clear not success...!");
+        }
     }//GEN-LAST:event_bntClearActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
@@ -713,7 +728,8 @@ public class Form extends javax.swing.JFrame {
         // TODO add your handling code here:
         
         if(JOptionPane.showConfirmDialog(null, "Do you want to exit?", "Information students", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_NO_OPTION){
-            System.exit(0);
+            Login.main(null);
+            this.dispose();
         }
     }//GEN-LAST:event_btnExitActionPerformed
 
@@ -748,7 +764,7 @@ public class Form extends javax.swing.JFrame {
             String phone = txtPhone.getText();
             String price = txtPrice.getText();
             String photo = txtPhotos.getText();
-             sql = "INSERT INTO `rupp`(`id`, `name`, `gender`, `birth`, `years`, `department`, `semester`, `class`, `time`, `building`, `date`, `start`, `finish`, `phone`, `price`, `photos`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+            sql = "INSERT INTO `rupp`(`id`, `name`, `gender`, `birth`, `years`, `department`, `semester`, `class`, `time`, `building`, `date`, `start`, `finish`, `phone`, `price`, `photos`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
             try {
                 ps = (PreparedStatement) connection().prepareStatement(sql);
                 ps.setInt(1, id);
@@ -887,6 +903,9 @@ public class Form extends javax.swing.JFrame {
                 ImageIcon icon = new ImageIcon(setphotos);
                 lbPhotos.setIcon(icon);
             }
+            else{
+                clearData();
+            }
         }catch (SQLException ex) {
             Logger.getLogger(Form.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -899,6 +918,31 @@ public class Form extends javax.swing.JFrame {
     private void rbmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbmActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_rbmActionPerformed
+
+    private void btnReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReportActionPerformed
+        try {
+            int selectedRow = Table.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(null, "Please select a row to generate the report.");
+            return;
+        }
+            String selectedId = Table.getValueAt(selectedRow, 0).toString();
+            //System.setProperty("jasper.reports.compiler", "net.sf.jasperreports.engine.design.JRJdtCompiler");
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/db_rupp?useSSL=false", "root", "");
+            JasperDesign jd = JRXmlLoader.load("E:\\Desktop\\Documents\\NetBeansProjects\\Simple\\src\\Rupp\\report.jrxml");
+            String query = "SELECT * FROM rupp WHERE id = " + selectedId;
+            JRDesignQuery updateQuery = new JRDesignQuery();
+            updateQuery.setText(query);
+            jd.setQuery(updateQuery);
+            JasperReport jr = JasperCompileManager.compileReport(jd);
+            JRSaver.saveObject(jr, "report.jasper");
+            JasperPrint jp = JasperFillManager.fillReport(jr, null, con);
+            JasperViewer.viewReport(jp);
+        } catch (HeadlessException | ClassNotFoundException | SQLException | JRException e) {
+            JOptionPane.showConfirmDialog(null, e);
+        }
+    }//GEN-LAST:event_btnReportActionPerformed
 
     /**
      * @param args the command line arguments
@@ -941,8 +985,8 @@ public class Form extends javax.swing.JFrame {
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnExit;
     private javax.swing.JButton btnPhotos;
+    private javax.swing.JButton btnReport;
     private javax.swing.JButton btnSave1;
-    private javax.swing.JButton btnSort;
     private javax.swing.JButton btnUpdate;
     private javax.swing.ButtonGroup btngDate;
     private javax.swing.ButtonGroup btngGender;

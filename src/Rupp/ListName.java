@@ -4,7 +4,9 @@
  */
 package Rupp;
 
+import Project.Projects;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -54,8 +56,9 @@ public class ListName extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         lbPhotos = new javax.swing.JLabel();
         btnClear = new javax.swing.JButton();
-        txtname = new javax.swing.JTextField();
         btnExit = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        txtname = new javax.swing.JTextArea();
         jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -165,13 +168,13 @@ public class ListName extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Khmer OS System", 1, 30)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 102));
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel3.setText("ឈ្មោះ សមាជិកក្រុម");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 110, 300, 51));
+        jLabel3.setText("ឈ្មោះ សមាជិកក្រុមទី៤");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 110, 340, 51));
 
         jLabel4.setFont(new java.awt.Font("Khmer OS System", 1, 30)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 51));
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel4.setText("ឈ្មោះ");
+        jLabel4.setText("ព័ត៌មាន");
         getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 110, 130, 51));
 
         lbPhotos.setFont(new java.awt.Font("Century Schoolbook", 1, 24)); // NOI18N
@@ -189,12 +192,6 @@ public class ListName extends javax.swing.JFrame {
         });
         getContentPane().add(btnClear, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 650, 160, 50));
 
-        txtname.setBackground(new java.awt.Color(102, 102, 102));
-        txtname.setFont(new java.awt.Font("Khmer OS System", 1, 36)); // NOI18N
-        txtname.setForeground(new java.awt.Color(51, 255, 255));
-        txtname.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        getContentPane().add(txtname, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 170, 340, 70));
-
         btnExit.setBackground(new java.awt.Color(0, 102, 102));
         btnExit.setFont(new java.awt.Font("Khmer OS System", 1, 24)); // NOI18N
         btnExit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Rupp/Photos/close.png"))); // NOI18N
@@ -206,6 +203,16 @@ public class ListName extends javax.swing.JFrame {
         });
         getContentPane().add(btnExit, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 650, 200, 50));
 
+        txtname.setBackground(new java.awt.Color(153, 153, 153));
+        txtname.setColumns(3);
+        txtname.setFont(new java.awt.Font("Khmer OS System", 1, 36)); // NOI18N
+        txtname.setForeground(new java.awt.Color(0, 255, 255));
+        txtname.setRows(3);
+        txtname.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(255, 255, 255)));
+        jScrollPane1.setViewportView(txtname);
+
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 170, 410, 290));
+
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Rupp/Photos/name.jpg"))); // NOI18N
         getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1280, 720));
 
@@ -216,9 +223,12 @@ public class ListName extends javax.swing.JFrame {
     private void jcb2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcb2ActionPerformed
         // TODO add your handling code here:
         String photos = "E:\\Image\\viva.jpg";
-        String Name = "២. សុខ វីវ៉ា";
+        String Name = "ឈ្មោះ : សុខ វីវ៉ា";
+        String gender = "ភេទ    : ប្រុស";
+        String old = "អាយុ   : ២០ឆ្នាំ";
+        String frome = "មកពី   : ខេត្ត សៀមរាប";
         if(jcb2.isSelected()){
-            txtname.setText(Name);
+            txtname.setText(Name+ "\n" + gender + "\n" + old + "\n" + frome);
             lbPhotos.setIcon(new ImageIcon(photos)); 
         }
         else{
@@ -229,10 +239,13 @@ public class ListName extends javax.swing.JFrame {
 
     private void jcb8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcb8ActionPerformed
         // TODO add your handling code here:
-        String photos = "E:\\Image\\ha.jpg";
-        String Name = "៨. អ៊ិត ជាហាវ";
+        String photos = "E:\\Image\\hav.jpg";
+        String Name = "ឈ្មោះ : អ៊ិតជាហាវ";
+        String gender = "ភេទ    : ប្រុស";
+        String old = "អាយុ   : ២០ឆ្នាំ";
+        String frome = "មកពី   : ខេត្ត កំពត";
         if(jcb8.isSelected()){
-            txtname.setText(Name);
+            txtname.setText(Name+ "\n" + gender + "\n" + old + "\n" + frome);
             lbPhotos.setIcon(new ImageIcon(photos)); 
         }
         else{
@@ -244,9 +257,12 @@ public class ListName extends javax.swing.JFrame {
     private void jcb7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcb7ActionPerformed
         // TODO add your handling code here:
         String photos = "E:\\Image\\ol.jpg";
-        String Name = "៧. អឿន សំអុល";
+        String Name = "ឈ្មោះ : អឿន សំអុល";
+        String gender = "ភេទ    : ប្រុស";
+        String old = "អាយុ   : ១៩ឆ្នាំ";
+        String frome = "មកពី   : ខេត្ត ព្រៃវែង";
         if(jcb7.isSelected()){
-            txtname.setText(Name);
+            txtname.setText(Name+ "\n" + gender + "\n" + old + "\n" + frome);
             lbPhotos.setIcon(new ImageIcon(photos));  
         }
         else{
@@ -258,9 +274,12 @@ public class ListName extends javax.swing.JFrame {
     private void jcb6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcb6ActionPerformed
         // TODO add your handling code here:
         String photos = "E:\\Image\\votey.jpg";
-        String Name = "៦. ឆុន នរបតី";
+        String Name = "ឈ្មោះ : ឆុន រនបតី";
+        String gender = "ភេទ    : ស្រី";
+        String old = "អាយុ   : ១៩ឆ្នាំ";
+        String frome = "មកពី   : ខេត្ត កំពង់ឆ្នាំង";
         if(jcb6.isSelected()){
-            txtname.setText(Name);
+            txtname.setText(Name+ "\n" + gender + "\n" + old + "\n" + frome);
             lbPhotos.setIcon(new ImageIcon(photos));
         }
         else{
@@ -272,9 +291,12 @@ public class ListName extends javax.swing.JFrame {
     private void jcb3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcb3ActionPerformed
         // TODO add your handling code here:
         String photos = "E:\\Image\\hamat.jpg";
-        String Name = "៣. សេន ហាំម៉ាត់";
+        String Name = "ឈ្មោះ : សេន ហាំម៉ាត់";
+        String gender = "ភេទ    : ប្រុស";
+        String old = "អាយុ   : ២២ឆ្នាំ";
+        String frome = "មកពី   : ខេត្ត បាត់ដំបង";
         if(jcb3.isSelected()){
-            txtname.setText(Name);
+            txtname.setText(Name+ "\n" + gender + "\n" + old + "\n" + frome);
             lbPhotos.setIcon(new ImageIcon(photos));
         }
         else{
@@ -286,9 +308,12 @@ public class ListName extends javax.swing.JFrame {
     private void jcb4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcb4ActionPerformed
         // TODO add your handling code here:
         String photos = "E:\\Image\\khamara.jpg";
-        String Name = "៤. ឃឿន ខេមរ៉ា";
+        String Name = "ឈ្មោះ : ឃឿន ខេមរ៉ា";
+        String gender = "ភេទ    : ប្រុស";
+        String old = "អាយុ   : ១៩ឆ្នាំ";
+        String frome = "មកពី   : ខេត្ត ព្រៃវែង";
         if(jcb4.isSelected()){
-            txtname.setText(Name);
+            txtname.setText(Name+ "\n" + gender + "\n" + old + "\n" + frome);
             lbPhotos.setIcon(new ImageIcon(photos));
         }
         else{
@@ -300,9 +325,12 @@ public class ListName extends javax.swing.JFrame {
     private void jcb1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcb1ActionPerformed
         // TODO add your handling code here:
         String photos = "E:\\Image\\vinou.jpg";
-        String Name = "១. ឆៃ វិនូ";
+        String Name = "ឈ្មោះ : ឆៃ វិនូ";
+        String gender = "ភេទ    : ប្រុស";
+        String old = "អាយុ   : ១៩ឆ្នាំ";
+        String frome = "មកពី   : ខេត្ត ព្រៃវែង";
         if(jcb1.isSelected()){
-            txtname.setText(Name);
+            txtname.setText(Name+ "\n" + gender + "\n" + old + "\n" + frome);
             lbPhotos.setIcon(new ImageIcon(photos));
         }
         else{
@@ -314,9 +342,12 @@ public class ListName extends javax.swing.JFrame {
     private void jcb5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcb5ActionPerformed
         // TODO add your handling code here:
         String photos = "E:\\Image\\narong.jpg";
-        String Name = "៥.​ជា ណារ៉ុង";
+        String Name = "ឈ្មោះ : ជា ណារ៉ុង";
+        String gender = "ភេទ    : ប្រុស";
+        String old = "អាយុ   : ១៨ឆ្នាំ";
+        String frome = "មកពី   : រាជធានី ភ្នំពេញ";
         if(jcb5.isSelected()){
-            txtname.setText(Name);
+            txtname.setText(Name+ "\n" + gender + "\n" + old + "\n" + frome);
             lbPhotos.setIcon(new ImageIcon(photos));
         }
         else{
@@ -327,12 +358,23 @@ public class ListName extends javax.swing.JFrame {
 
     private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
         // TODO add your handling code here:
-        clearData();
+       if(JOptionPane.showConfirmDialog(null, "តើអ្នកចង់សម្អាតទិន្នន័យមែនទេ?","បញ្ជីឈ្មោះ",JOptionPane.YES_NO_OPTION)==JOptionPane.YES_NO_OPTION){
+           clearData();
+       }
+       else{
+           JOptionPane.showMessageDialog(null, "ការសម្អាតបានបរាជ័យ");
+       }
     }//GEN-LAST:event_btnClearActionPerformed
 
     private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
         // TODO add your handling code here:
-        System.exit(0);
+        if(JOptionPane.showConfirmDialog(null, "តើអ្នកចង់ចាកចេញមែនទេ?", "បញ្ចីឈ្មោះ", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_NO_OPTION){
+            Projects.main(null);
+            this.dispose();
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "ការចាកចេញ​​បានបរាជ័យ...!");
+        }
     }//GEN-LAST:event_btnExitActionPerformed
 
     /**
@@ -379,6 +421,7 @@ public class ListName extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JCheckBox jcb1;
     private javax.swing.JCheckBox jcb2;
     private javax.swing.JCheckBox jcb3;
@@ -388,6 +431,6 @@ public class ListName extends javax.swing.JFrame {
     private javax.swing.JCheckBox jcb7;
     private javax.swing.JCheckBox jcb8;
     private javax.swing.JLabel lbPhotos;
-    private javax.swing.JTextField txtname;
+    private javax.swing.JTextArea txtname;
     // End of variables declaration//GEN-END:variables
 }
